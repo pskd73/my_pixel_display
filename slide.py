@@ -1,7 +1,12 @@
 from matrix_display import MatrixDisplay
 from abc import abstractmethod
 from datetime import datetime
+import requests
 import reader
+
+
+def text_to_width(text: str):
+	return len(text)//5 + 1
 
 
 class Slide:
@@ -34,8 +39,16 @@ class IndiaTopNewsSlide(Slide):
 		self.times_showed = 1
 	
 	def show(self, display: MatrixDisplay):
-		if self.times_showed % 50 == 0:
+		if self.times_showed % 5 == 0:
 			self.reader.update_feeds()
 		top_5_titles = ' --- '.join([e.title for e in list(self.reader.get_entries())[:5]])
 		text_to_show = 'Top news - ' + top_5_titles
-		display.marquee(text_to_show, len(text_to_show)//5 + 1, delay=0.01)
+		display.marquee(text_to_show, text_to_width(text_to_show), delay=0.01)
+		
+
+class QuotableSlide(Slide):
+	def show(self, display: MatrixDisplay):
+		res = requests.get('https://api.quotable.io/random?tags=technology,famous-quotes').json()
+		quote_text = 'Quote - ' + res['content']
+		display.marquee(quote_text, text_to_width(quote_text), delay=0.01)
+		

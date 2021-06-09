@@ -19,7 +19,7 @@ class MatrixDisplay:
 			block_orientation=90, 
 			blocks_arranged_in_reverse_order=True
 		)
-		self.font = ImageFont.truetype('./pixelmix.ttf', 8)
+		self.font = ImageFont.truetype('/home/pi/my_pixel_display/pixelmix.ttf', 8)
 
 	def marquee(self, text: str, width: int, delay: float=0.1):
 		viewport_width = BOARD_WIDTH * width
