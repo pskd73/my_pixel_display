@@ -1,4 +1,4 @@
-from slide import TimeSlide, BhuviBirthdaySlide
+from slide import TimeSlide, BhuviBirthdaySlide, IndiaTopNewsSlide
 from matrix_display import MatrixDisplay
 import time
 
@@ -8,7 +8,8 @@ INTER_SLIDE_DELAY = 1
 
 slides = [
 	TimeSlide(),
-	BhuviBirthdaySlide()
+	BhuviBirthdaySlide(),
+	IndiaTopNewsSlide()
 ]
 
 

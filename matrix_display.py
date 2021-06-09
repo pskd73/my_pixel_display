@@ -21,7 +21,7 @@ class MatrixDisplay:
 		)
 		self.font = ImageFont.truetype('./pixelmix.ttf', 8)
 
-	def marquee(self, text: str, width: int, sleep_sec: float=0.1):
+	def marquee(self, text: str, width: int, delay: float=0.1):
 		viewport_width = BOARD_WIDTH * width
 		self.virtual = viewport(
 			self.device, 
@@ -34,7 +34,7 @@ class MatrixDisplay:
 		while offset < viewport_width - BOARD_WIDTH:
 			self.virtual.set_position((offset, 0))
 			offset += 1
-			time.sleep(sleep_sec)
+			time.sleep(delay)
 			
 	def hero_entry(self, text: str, view_time: float=5, x_offset:int=0):
 		self.virtual = viewport(

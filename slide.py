@@ -1,6 +1,7 @@
 from matrix_display import MatrixDisplay
 from abc import abstractmethod
 from datetime import datetime
+import reader
 
 
 class Slide:
@@ -12,11 +13,29 @@ class Slide:
 class TimeSlide(Slide):
 	def show(self, display: MatrixDisplay):
 		now = datetime.now()
-		display.hero_entry(now.strftime('%H:%M'), x_offset=3)
+		display.hero_entry(now.strftime('%H:%M'), x_offset=4)
 
 
 class BhuviBirthdaySlide(Slide):
 	def show(self, display: MatrixDisplay):
 		birthday = datetime(2021, 7, 31)
 		now = datetime.now()
-		display.marquee('Bhuvis birthday {} days to go'.format((birthday - now).days), 8)
+		display.marquee('Bhuvi\'s birthday {} days to go'.format((birthday - now).days), 8, delay=0.01)
+
+
+class IndiaTopNewsSlide(Slide):
+	def __init__(self):
+		self.reader = reader.make_reader('db.sqlite')
+		try:
+			self.reader.add_feed('https://www.indiatoday.in/rss/1206584')
+		except reader.exceptions.FeedExistsError:
+			pass
+		self.reader.update_feeds()
+		self.times_showed = 1
+	
+	def show(self, display: MatrixDisplay):
+		if self.times_showed % 50 == 0:
+			self.reader.update_feeds()
+		top_5_titles = ' --- '.join([e.title for e in list(self.reader.get_entries())[:5]])
+		text_to_show = 'Top news - ' + top_5_titles
+		display.marquee(text_to_show, len(text_to_show)//5 + 1, delay=0.01)
