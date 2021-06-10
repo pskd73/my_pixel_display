@@ -39,11 +39,12 @@ class IndiaTopNewsSlide(Slide):
 		self.times_showed = 1
 	
 	def show(self, display: MatrixDisplay):
-		if self.times_showed % 5 == 0:
+		if self.times_showed % 3 == 0:
 			self.reader.update_feeds()
 		top_5_titles = ' --- '.join([e.title for e in list(self.reader.get_entries())[:5]])
 		text_to_show = 'Top news - ' + top_5_titles
 		display.marquee(text_to_show, text_to_width(text_to_show), delay=0.01)
+		self.times_showed += 1
 		
 
 class QuotableSlide(Slide):
